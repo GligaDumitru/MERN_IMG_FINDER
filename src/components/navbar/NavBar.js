@@ -124,6 +124,7 @@ const Search = (props) => {
                     </div>
                 </Toolbar>
             </AppBar>
+            
         </div >
     );
 

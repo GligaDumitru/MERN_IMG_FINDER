@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import './App.css';
 import NavBar from "./components/navbar/NavBar";
+import ImagesResult from './components/images-result/ImagesResult';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import axios from 'axios';
 
@@ -19,10 +20,10 @@ class App extends Component {
 
 
   handleImages = () => {
-    console.log("a");
+    console.log(`${this.state.apiUrl}/?key=${this.state.apiKey}?q=${this.state.searchText}&image_type=photo&per_page=${this.state.numberOfImages}&safesearch=true`);
     axios.get(`${this.state.apiUrl}/?key=${this.state.apiKey}?q=${this.state.searchText}&image_type=photo&per_page=${this.state.numberOfImages}&safesearch=true`)
-    .then(res => this.setState({ images: res.data.hits }))
-    .catch(err => console.log(err));
+      .then(res => this.setState({ images: res.data.hits }))
+      .catch(err => console.log(err));
   }
 
   onTextChange = ({ target }) => {
@@ -32,9 +33,9 @@ class App extends Component {
     }, this.handleImages);
   }
 
-  
+
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value },this.handleImages);
+    this.setState({ [event.target.name]: event.target.value }, this.handleImages);
   };
 
 
@@ -43,13 +44,18 @@ class App extends Component {
     return (
       <div className="App">
         <MuiThemeProvider>
-          <NavBar
-            numberOfImages={this.state.numberOfImages}
-            searchText={this.statesearchText}
-            handleChange={this.handleChange}
-            onTextChange={this.onTextChange}
-          />
-          {JSON.stringify(this.state)}
+          <Fragment>
+
+            <NavBar
+              numberOfImages={this.state.numberOfImages}
+              searchText={this.statesearchText}
+              handleChange={this.handleChange}
+              onTextChange={this.onTextChange}
+            />
+            <ImagesResult images = {this.state.images}/> 
+
+
+          </Fragment>
         </MuiThemeProvider>
       </div>
     );
